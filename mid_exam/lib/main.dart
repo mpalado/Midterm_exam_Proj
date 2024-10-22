@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mid_exam/CartScreen.dart';
+import 'package:mid_exam/HomeScreen.dart';
+import 'package:mid_exam/ProfileScreen.dart';
+import 'package:mid_exam/provider.dart';
 import 'package:provider/provider.dart';
-import 'HomeScreen.dart';
-import 'provider.dart';
 
 void main() {
   runApp(
@@ -21,26 +23,61 @@ class MyApp extends StatelessWidget {
       title: 'TechShop Store',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'Montserrat',
-        textTheme: const TextTheme(
-          displayLarge: TextStyle(
-              fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),
-          displayMedium: TextStyle(
-              fontSize: 24, fontWeight: FontWeight.w600, color: Colors.black87),
-          bodyLarge: TextStyle(fontSize: 16, color: Colors.black54),
-          labelLarge: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blueAccent,
-            padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-            textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-        ),
       ),
-      home: HomeScreen(),
+      home: MainScreen(),
+    );
+  }
+}
+
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int _selectedIndex = 0;
+
+  // List of screens for the navigation bar
+  final List<Widget> _screens = [
+    HomeScreen(), // Products
+    CartScreen(), // Cart
+    ProfileScreen(), // Profile
+  ];
+
+  // Method to handle navigation tap
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('TechShop Store'),
+      ),
+      body: _screens[_selectedIndex], // Display the selected screen
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
+      ),
     );
   }
 }

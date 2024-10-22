@@ -5,7 +5,6 @@ class CartProvider extends ChangeNotifier {
   double _totalPrice = 0.0;
 
   List<Map<String, dynamic>> get cart => _cart;
-  int get cartItemCount => _cart.length;
   double get totalPrice => _totalPrice;
 
   void addToCart(Map<String, dynamic> product) {
