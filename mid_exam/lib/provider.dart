@@ -1,27 +1,32 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
-class CartProvider extends ChangeNotifier {
-  List<Map<String, dynamic>> _cart = [];
-  double _totalPrice = 0.0;
+class CartProvider with ChangeNotifier {
+  List<Map<String, dynamic>> _items = [];
 
-  List<Map<String, dynamic>> get cart => _cart;
-  double get totalPrice => _totalPrice;
+  List<Map<String, dynamic>> get items => _items;
+
+  double get totalPrice {
+    double total = 0.0;
+    for (var item in _items) {
+      total += item['price'];
+    }
+    return total;
+  }
+
+  int get cartItemCount => _items.length;
 
   void addToCart(Map<String, dynamic> product) {
-    _cart.add(product);
-    _totalPrice += product['price'];
+    _items.add(product);
     notifyListeners();
   }
 
   void removeFromCart(Map<String, dynamic> product) {
-    _cart.remove(product);
-    _totalPrice -= product['price'];
+    _items.remove(product);
     notifyListeners();
   }
 
   void clearCart() {
-    _cart.clear();
-    _totalPrice = 0.0;
+    _items.clear();
     notifyListeners();
   }
 }

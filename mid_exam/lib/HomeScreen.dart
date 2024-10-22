@@ -1,49 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:mid_exam/ProductDetailScreen.dart';
+import 'package:mid_exam/CategoryScreen.dart';
 
 class HomeScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> products = [
-    {
-      'name': 'Asus Vivbobook 15 ',
-      'price': 29.99,
-      'description':
-          'X1605ZA-MB819WSM I5-1235U/16GB DDR4/512GB M.2 NVMe SSD/Win11 Laptop + H&S',
-    },
-    {
-      'name': 'MSI MODERN 14 F13MG-026PH 14',
-      'price': 49.99,
-      'description':
-          'Raptor Lake i3-1315U/8GB DDR4/512GB NVMe PCIe SSD/Win11 Laptop',
-    },
-    {
-      'name': 'MSI Thin A15 B7UCX-084PH 15.6',
-      'price': 99.99,
-      'description':
-          'FHD 144Hz AMD RYZEN 5 7535HS/8GB/512GBSSD/RTX 2050 4GB/WIN11 Laptop',
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(products[index]['name']),
-          subtitle: Text('\$${products[index]['price']}'),
-          trailing: Icon(Icons.arrow_forward),
-          onTap: () {
-            // Navigate to product detail page
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    ProductDetailScreen(product: products[index]),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'TechShop Store',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+        ),
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Categories',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
               ),
-            );
-          },
+            ),
+            const SizedBox(height: 20),
+            buildCategoryTile(context, 'Laptop', Icons.laptop),
+            buildCategoryTile(context, 'Processor', Icons.memory),
+            buildCategoryTile(context, 'Graphics Card', Icons.videogame_asset),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildCategoryTile(
+      BuildContext context, String category, IconData icon) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryScreen(category: category),
+          ),
         );
       },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 4,
+        margin: const EdgeInsets.only(bottom: 20),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Icon(icon, size: 40, color: Colors.deepPurple),
+              const SizedBox(width: 20),
+              Text(
+                category,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+              const Spacer(),
+              const Icon(Icons.arrow_forward_ios, color: Colors.grey),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
