@@ -1,28 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:mid_exam/CartScreen.dart';
-import 'package:mid_exam/HomeScreen.dart';
-import 'package:mid_exam/ProfileScreen.dart';
-import 'package:mid_exam/provider.dart';
-import 'package:provider/provider.dart';
+import 'homescreen.dart'; // Ensure HomeScreen is in the correct file.
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => CartProvider()),
-      ],
-      child: MyApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TechShop Store',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        scaffoldBackgroundColor: Colors.white, // White Background
+        primaryColor: const Color(0xFF5F2F91), // Deep Purple
+        hintColor: const Color(0xFFFFA500), // Orange
       ),
       home: LoginScreen(),
     );
@@ -40,17 +30,18 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
 
   void _login() {
-    String username = _usernameController.text.trim();
-    String password = _passwordController.text.trim();
+    String username = _usernameController.text;
+    String password = _passwordController.text;
 
-    // Example validation for login
+    // Check if the username and password are correct (example validation)
     if (username == "admin" && password == "password123") {
+      // Navigate to HomeScreen if login is successful
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MainScreen()), // Navigate to MainScreen
+        MaterialPageRoute(builder: (context) => HomeScreen()),
       );
     } else {
-      // Show error if login fails
+      // Show an error message if login fails
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -58,7 +49,9 @@ class _LoginScreenState extends State<LoginScreen> {
           content: const Text('Incorrect username or password'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               child: const Text('OK'),
             ),
           ],
@@ -69,10 +62,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).primaryColor; // Deep Purple from theme
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: primaryColor,
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -85,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: Colors.deepPurple,
+                color: Color(0xFF212121), // Dark Gray text
               ),
               textAlign: TextAlign.center,
             ),
@@ -94,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: _usernameController,
               decoration: const InputDecoration(
                 labelText: 'Username',
+                labelStyle: TextStyle(color: Color(0xFF757575)), // Medium Gray
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.person),
               ),
@@ -104,12 +101,13 @@ class _LoginScreenState extends State<LoginScreen> {
               obscureText: !_isPasswordVisible,
               decoration: InputDecoration(
                 labelText: 'Password',
+                labelStyle: const TextStyle(color: Color(0xFF757575)),
                 border: const OutlineInputBorder(),
                 prefixIcon: const Icon(Icons.lock),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.grey,
+                    color: const Color(0xFF757575),
                   ),
                   onPressed: () {
                     setState(() {
@@ -122,68 +120,15 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _login,
-              child: const Text(
-                   'Login',
-                style: TextStyle(color: Colors.white), // Ensure text is white
-               ),
+              child: const Text('Login'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple,
+                backgroundColor: primaryColor, // Deep Purple from theme
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 textStyle: const TextStyle(fontSize: 18),
-                ),
               ),
+            ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MainScreen extends StatefulWidget {
-  @override
-  _MainScreenState createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
-
-  // List of screens for the navigation bar
-  final List<Widget> _screens = [
-    HomeScreen(),
-    CartScreen(),
-    ProfileScreen(),
-  ];
-
-  // Method to handle navigation tap
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.deepPurple,
-        unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
       ),
     );
   }

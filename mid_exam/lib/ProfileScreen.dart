@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mid_exam/main.dart'; // Import main.dart to access LoginScreen.
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -18,7 +19,7 @@ class ProfileScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             const Center(
-              child: const CircleAvatar(
+              child: CircleAvatar(
                 radius: 50,
                 backgroundColor: Colors.deepPurple,
                 child: Icon(
@@ -68,12 +69,44 @@ class ProfileScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               onTap: () {
-                // Log out action
+                // Perform the logout action
+                _logout(context);
               },
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _logout(BuildContext context) {
+    // Show a confirmation dialog before logging out
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Log Out'),
+          content: Text('Are you sure you want to log out?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigate back to LoginScreen
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (route) => false, // Remove all previous routes
+                );
+              },
+              child: Text('Log Out'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
