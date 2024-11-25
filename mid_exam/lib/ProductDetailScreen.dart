@@ -19,6 +19,15 @@ class ProductDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+             if (product['imageUrl'] != null) // Check if the image URL exists
+              Center(
+                child: Image.network(
+                  product['imageUrl'],
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            SizedBox(height: 16),
             Text(
               product['name'],
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -54,7 +63,8 @@ class ProductDetailScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                 ),
                 child:
-                    const Text('Add to Cart', style: TextStyle(fontSize: 18)),
+                    const Text('Add to Cart', style: TextStyle(color: Colors.white, fontSize: 18)),
+                    
               ),
             ),
           ],

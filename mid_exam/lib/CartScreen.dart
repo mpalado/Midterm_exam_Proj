@@ -51,7 +51,7 @@ class CartScreen extends StatelessWidget {
                     ),
                     child: const Text(
                       'Proceed to Checkout',
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(color: Colors.white,fontSize: 18),
                     ),
                   ),
                 ],
